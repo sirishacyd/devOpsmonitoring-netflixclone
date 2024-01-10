@@ -514,4 +514,33 @@ You've now installed the Prometheus Plugin. Next, we'll configure Prometheus to 
 ![jenkins-prom](screenshots/jenkins-prom-integration.png)
 
 Once that is done you will Prometheus is set to /Prometheus path in system configurations
-![jenkins-prom](screenshots/jenkins-prom-integration.png)
+![jenkins-prom](screenshots/jen-prompathconfig.png)
+click on apply and save
+add job_name with static_configs. go to Prometheus server
+```
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+Paste below code
+```
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: ['<jenkins-ip>:8080']
+```
+Before, restarting check if the config is valid.
+```
+promtool check config /etc/prometheus/prometheus.yml
+```
+
+use a POST request to reload the config.
+```
+curl -X POST http://localhost:9090/-/reload
+```
+Check the targets section
+``
+http://<ip>:9090/targets
+```
+You will see Jenkins is added to it
+
+
