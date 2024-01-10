@@ -497,3 +497,18 @@ Click on Save and Test
 Let's add Dashboard for a better view,Click on Import Dashboard paste this code 1860 and click on load,Select the Datasource and click on Import,You will see this output
 
 ![grafana](screenshots/import-graf-prom.png)
+
+# Step 5: Install Prometheus Plugin for Jenkins
+
+1. Ensure Jenkins is running.
+
+2. Navigate to **Manage Jenkins** > **Manage Plugins**.
+
+3. Search for "Prometheus" in the **Available Plugins** section.
+
+4. Install the "Prometheus Metrics" plugin.
+
+5. Jenkins will automatically restart after installation.
+
+You've now installed the Prometheus Plugin. Next, we'll configure Prometheus to monitor your Jenkins system.
+![jenkins-prom](screenshots/screenshots/jenkins-prom-integration.png)
