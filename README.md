@@ -105,3 +105,8 @@ sudo apt-get install jenkins -y
 sudo systemctl start jenkins
 sudo systemctl status jenkins
 ```
+
+```
+sudo chmod 777 jenkins.sh
+./jenkins.sh    # installl jenkins
+```
