@@ -511,7 +511,7 @@ Let's add Dashboard for a better view,Click on Import Dashboard paste this code 
 5. Jenkins will automatically restart after installation.
 
 You've now installed the Prometheus Plugin. Next, we'll configure Prometheus to monitor your Jenkins system.
-![jenkins-prom](screenshots/screenshots/jenkins-prom-integration.png)
+![jenkins-prom](screenshots/jenkins-prom-integration.png)
 
 Once that is done you will Prometheus is set to /Prometheus path in system configurations
-![jenkins-prom](screenshots/screenshots/jenkins-promconfigpath.png)
+![jenkins-prom](screenshots/jenkins-promconfigpath.png)
