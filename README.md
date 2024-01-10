@@ -216,3 +216,40 @@ wget https://github.com/prometheus/prometheus/releases/download/v2.47.1/promethe
 ```
 
 ![promo](screenshots/prometheus-install.png)
+
+Create the necessary directories for Prometheus and its configuration files:
+
+```bash
+sudo mkdir -p /data /etc/prometheus
+```
+
+Change the current directory to the Prometheus installation directory. Replace prometheus-2.47.1.linux-amd64/ with the appropriate version if needed
+```
+cd prometheus-2.47.1.linux-amd64/
+```
+Move the Prometheus binary and promtool to the /usr/local/bin/ directory for easy execution
+```
+sudo mv prometheus promtool /usr/local/bin/
+```
+Optionally, move console libraries to the Prometheus configuration directory. These libraries are used for creating custom consoles, but you can skip this step if you're just getting started:
+
+```
+sudo mv consoles/ console_libraries/ /etc/prometheus/
+```
+
+Move the main Prometheus configuration file to its configuration directory:
+```
+sudo mv prometheus.yml /etc/prometheus/prometheus.yml
+```
+Set the correct ownership for the /etc/prometheus/ and /data/ directories to avoid permission issues
+```
+sudo chown -R prometheus:prometheus /etc/prometheus/ /data/
+```
+you can delete the Prometheus archive and folder if no longer needed:
+```
+cd
+rm -rf prometheus-2.47.1.linux-amd64.tar.gz
+```
+![prometheus](screenshots/prometheus-filemove.png)
+Verify that Prometheus is installed correctly and check its version:
+prometheus --version
