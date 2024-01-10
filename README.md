@@ -252,4 +252,77 @@ rm -rf prometheus-2.47.1.linux-amd64.tar.gz
 ```
 ![prometheus](screenshots/prometheus-filemove.png)
 Verify that Prometheus is installed correctly and check its version:
+
+```
 prometheus --version
+```
+
+# Setting up Prometheus with Systemd
+
+We're going to use Systemd, which is a system and service manager for Linux operating systems. For that, we need to create a Systemd unit configuration file.
+
+1. Create the Systemd unit configuration file for Prometheus:
+
+   ```bash
+   sudo vim /etc/systemd/system/prometheus.service
+
+Prometheus.service
+```
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/bin/prometheus \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/data \
+  --web.console.templates=/etc/prometheus/consoles \
+  --web.console.libraries=/etc/prometheus/console_libraries \
+  --web.listen-address=0.0.0.0:9090 \
+  --web.enable-lifecycle
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Explanation of important options in the Systemd unit configuration:
+
+Restart: Configures whether the service shall be restarted when the service process exits, is killed, or a timeout is reached.
+RestartSec: Configures the time to sleep before restarting a service.
+User and Group: Linux user and group to start the Prometheus process.
+--config.file=/etc/prometheus/prometheus.yml: Path to the main Prometheus configuration file.
+--storage.tsdb.path=/data: Location to store Prometheus data.
+--web.listen-address=0.0.0.0:9090: Configure Prometheus to listen on all network interfaces. In some situations, you may have a proxy like Nginx to redirect requests to Prometheus. In that case, you would configure Prometheus to listen only on localhost.
+--web.enable-lifecycle: Allows managing Prometheus, for example, to reload configuration without restarting the service.
+
+2.To automatically start Prometheus after a reboot, enable it:
+```
+sudo systemctl enable prometheus
+```
+3.Start Prometheus:
+```
+sudo systemctl start prometheus
+```
+4. To check the status of Prometheus, run the following command:
+```
+sudo systemctl status prometheus
+```
+![prom-restart](screenshots/prom-restart.png)
+5. If you encounter any issues with Prometheus or are unable to start it, use the journalctl command to find the problem
+```
+journalctl -u prometheus -f --no-pager
+```
+6.Access Prometheus via a web browser using the IP address of your Ubuntu server and appending port 9090
+```
+<public-ip>:9090
+```
+
