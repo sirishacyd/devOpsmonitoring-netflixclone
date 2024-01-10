@@ -533,14 +533,18 @@ Before, restarting check if the config is valid.
 promtool check config /etc/prometheus/prometheus.yml
 ```
 
-use a POST request to reload the config.
+se a POST request to reload the config.
+
 ```
 curl -X POST http://localhost:9090/-/reload
 ```
+
 Check the targets section
-``
+
+```
 http://<ip>:9090/targets
 ```
+
 You will see Jenkins is added to it
 
 ![jenkins-prom](screenshots/screenshots/targets-up.png)
@@ -553,4 +557,70 @@ You will see Jenkins is added to it
 6. Click "Import" to finalize.
 7. View the detailed Jenkins overview.
 
+![jenkins-prom](screenshots/dashgrafanaJenkins.png)
 
+## Step 6 — Email Integration With Jenkins and Plugin Setup
+Install Email Extension Plugin in Jenkins
+
+
+### Configuring Gmail for Jenkins Email Notifications
+
+1. **Enable 2-Step Verification:**
+   - Go to your Gmail and click on your profile.
+   - Click on "Manage Your Google Account."
+   - Click on the "Security" tab on the left side panel.
+   - Enable 2-step verification if not already enabled.
+
+2. **Generate App Password:**
+   - Search for "app passwords" in the search bar.
+   - Click on "Other" and provide your name.
+   - Click on "Generate" and copy the generated password.
+
+3. **Install the Jenkins Plugin:**
+   - Once the plugin is installed in Jenkins, go to "Manage Jenkins."
+   - Click on "Configure System."
+   - Under the "E-mail Notification" section, configure the details 
+  
+   - Click on "Apply" and save.
+
+4. **Add Mail Username and Generated Password:**
+   - Click on "Manage Jenkins" and then "Credentials."
+   - Add your mail username and the generated password.
+
+5. **Configure Extended E-mail Notification:**
+   - Under the "Extended E-mail Notification" section, configure the details :
+
+    - Click on "Apply" and save.
+
+```
+post {
+     always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: "Project: ${env.JOB_NAME}<br/>" +
+                "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                "URL: ${env.BUILD_URL}<br/>",
+            to: 'postbox.aj99@gmail.com',  #change Your mail
+            attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+        }
+    }
+```
+
+
+Next, we will log in to Jenkins and start to configure our Pipeline in Jenkins
+
+## Step 7 — Install Plugins like JDK, Sonarqube Scanner, NodeJs, OWASP Dependency Check
+
+# 7A — Install Plugin
+Goto Manage Jenkins →Plugins → Available Plugins →
+
+Install below plugins
+
+1 → Eclipse Temurin Installer (Install without restart)
+
+2 → SonarQube Scanner (Install without restart)
+
+3 → NodeJs Plugin (Install Without restart)
+
+# 7B — Configure Java and Nodejs in Global Tool Configuration
+Goto Manage Jenkins → Tools → Install JDK(17) and NodeJs(16)→ Click on Apply and Save
