@@ -325,4 +325,4 @@ journalctl -u prometheus -f --no-pager
 ```
 <public-ip>:9090
 ```
-
+![prom-9090](screenshots/promo9090.png)
