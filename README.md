@@ -148,4 +148,13 @@ After installing Docker, proceed to create a Sonarqube container. Remember to ad
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 ```
 ![docker-sonar](screenshots/docker-sonarimage.png)
+
+Now our sonarqube is up and running
+
+Enter username and password, click on login and change password
+```
+username admin
+password admin
+
+````
 ![sonar](screenshots/sonarpage.png)
