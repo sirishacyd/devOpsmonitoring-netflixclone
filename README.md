@@ -485,3 +485,15 @@ password admin
 ![grafana](screenshots/grafana-install.png)
 
 ![grafana](screenshots/grafana-login.png)
+
+To visualize metrics, you need to add a data source first
+Click Add data source and select Prometheus
+For the URL, enter localhost:9090 and click Save and test. You can see Data source is working
+```
+<public-ip:9090>
+```
+Click on Save and Test
+
+Let's add Dashboard for a better view,Click on Import Dashboard paste this code 1860 and click on load,Select the Datasource and click on Import,You will see this output
+
+![grafana](screenshots/import-graf-prom.png)
