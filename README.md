@@ -514,3 +514,4 @@ You've now installed the Prometheus Plugin. Next, we'll configure Prometheus to 
 ![jenkins-prom](screenshots/screenshots/jenkins-prom-integration.png)
 
 Once that is done you will Prometheus is set to /Prometheus path in system configurations
+![jenkins-prom](screenshots/screenshots/jenkins-promconfigpath.png)
