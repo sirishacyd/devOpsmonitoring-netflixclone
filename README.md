@@ -74,5 +74,5 @@ Netflix clone using various tools and technologies. Jenkins will serve as the Co
 
 Launch an AWS T2 Large Instance, using the Ubuntu image. You have the option to either create a new key pair or use an existing one. For the purpose of learning, enable HTTP and HTTPS settings in the security group and open all ports
 
-![architecture ](screenshots/)
+![ec2](screenshots/netflix-ec2.png)
 
