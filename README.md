@@ -4,10 +4,8 @@ Netflix clone using various tools and technologies. Jenkins will serve as the Co
 ## Prerequisites
 - An Ubuntu (22.04) T2 Large instance on a cloud provider.
 - Access to a GitHub repository hosting the Netflix clone code
-https://github.com/sirishacyd/netflix-clone
-
+[git](https://github.com/sirishacyd/netflix-clone)
 ![arch](screenshots/arch.png)
-
 
 ## Steps Overview
 1. **Launch an Ubuntu (22.04) T2 Large Instance**
@@ -68,11 +66,13 @@ https://github.com/sirishacyd/netflix-clone
 ### Step 12: Kubernetes Master and Slave Setup
 - Set up Kubernetes for orchestrating the deployment.
 
-### Step 13: Access the Netflix Clone App
-- Access the deployed application through a web browser.
+### Step 13 : Access Netflix Clone App and Terminate AWS EC2 Instances
 
-### Step 14: Terminate the AWS EC2 Instances
-- Shut down the AWS EC2 instances to conserve resources.
+1. **Access the Deployed Application:** 
+   - Use a web browser to access the Netflix Clone application.
+
+2. **Shut Down AWS EC2 Instances:** 
+   - Conserve resources by shutting down the AWS EC2 instances once you're finished.
 
 
 ## let's get started and dig deeper into each of these steps:
@@ -886,13 +886,14 @@ sudo apt-get install -y kubelet kubeadm kubectl
 
 sudo snap install kube-apiserver
 ```
+
 ![master](screenshots/mastercmds-install.png)
 ![worker](screenshots/workercmds-install.png)
 
 ### Part 3 --------------- Master ---------------
 ```
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
-# in case your in root exit from it and run below commands
+- exit from the root user and then run the below commands.
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -900,24 +901,24 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 ```
 
 ### ----------Worker Node------------
+### Worker Node Setup
+
+Join the worker node to the Kubernetes cluster using the command:
 
 ```
 sudo kubeadm join <master-node-ip>:<master-node-port> --token <token> --discovery-token-ca-cert-hash <hash>
 ```
-Copy the config file to Jenkins master or the local file manager and save it
-
-copy it and save it in documents or another folder save it as secret-file.txt
-
-Note: create a secret-file.txt in your file explorer save the config in it and use this at the kubernetes credential section.
-
-Install Kubernetes Plugin, Once it's installed successfully
-
-goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials - add secret file and save
-
-### Install Node_exporter on both master and worker
-Let's add Node_exporter on Master and Worker to monitor the metrics
-
-First, let's create a system user for Node Exporter by running the following command:
+Config File Handling for Jenkins:
+Copy the Kubernetes config file to the Jenkins master or your local file manager.
+Save it as secret-file.txt in a chosen folder (e.g., Documents).
+Note: Create secret-file.txt in your file explorer, save the config in it, and use this file in the Kubernetes credential section of Jenkins.
+Kubernetes Plugin Installation:
+Install the Kubernetes Plugin in Jenkins.
+After installation, go to Manage Jenkins -> Manage Credentials.
+Click on Jenkins Global, then Add Credentials.
+Select Add Secret File and save.
+Install Node_exporter on Master and Worker Nodes
+Creating a System User for Node Exporter:
 
 ```
 sudo useradd \
@@ -926,29 +927,28 @@ sudo useradd \
     --shell /bin/false node_exporter
 ```
 
-
-Use the wget command to download the binary.
+1.Downloading and Setting Up Node Exporter:
 
 ```
 wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
 ```
 
-Extract the node exporter from the archive.
+2.Extract the node exporter from the archive.
 ```
 tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
 ```
-Move binary to the /usr/local/bin.
+3. Move the binary to /usr/local/bin:
 ```
 sudo mv \
   node_exporter-1.6.1.linux-amd64/node_exporter \
   /usr/local/bin/
 ```
 
-Clean up, and delete node_exporter archive and a folder.
+4. Clean up by deleting the Node Exporter archive and folder:
 ```
 rm -rf node_exporter*
 ```
-Verify that you can run the binary
+5. Verify the Node Exporter installation:
 ```
 node_exporter --version
 ```
@@ -958,11 +958,14 @@ Node Exporter has a lot of plugins that we can enable. If you run Node Exporter 
 node_exporter --help
 
 ```
-systemd unit file.
+Configuring Node Exporter:
+
 ```
 sudo vim /etc/systemd/system/node_exporter.service
 ```
-node_exporter.service
+
+'node_exporter.service'
+
 ```
 [Unit]
 Description=Node Exporter
@@ -985,30 +988,27 @@ ExecStart=/usr/local/bin/node_exporter \
 WantedBy=multi-user.target
 ```
 
-Replace Prometheus user and group to node_exporter, and update the ExecStart command.
-
-To automatically start the Node Exporter after reboot, enable the service.
+- Enable and start the Node Exporter service: 
 ```
 sudo systemctl enable node_exporter
-```
-Then start the Node Exporter.
-```
 sudo systemctl start node_exporter
 ```
-Check the status of Node Exporter with the following command
+- Check the Node Exporter status:
 
 ```
 sudo systemctl status node_exporter
 ```
-If you have any issues, check logs with journalctl
+- For troubleshooting, use the following command
 
 ```
 journalctl -u node_exporter -f --no-pager
 ```
 
-To create a static target, you need to add job_name with static_configs. Go to Prometheus server
+### Configuring Prometheus Server
+
 ```
 sudo vim /etc/prometheus/prometheus.yml
+- Add the following job configurations in prometheus.yml:
 
 ```
 prometheus.yml
@@ -1021,22 +1021,22 @@ prometheus.yml
     static_configs:
       - targets: ["<worker-ip>:9100"]
 ```
-By default, Node Exporter will be exposed on port 9100.
-Before, restarting check if the config is valid.
+- Validate the Prometheus configuration:
+
 ```
 promtool check config /etc/prometheus/prometheus.yml
 ```
- use a POST request to reload the config.
+- Reload the Prometheus configuration using a POST request.
  ```
 curl -X POST http://localhost:9090/-/reload
 ```
-Check the targets section
+- Check the Prometheus targets:
 ```
 http://<ip>:9090/targets
 ```
 ![promstatus](screenshots/promstatus.png)
 
-final step to deploy on the Kubernetes cluster
+- Final step to deploy on the Kubernetes cluster
 
 ```
 stage('Deploy to kubernets'){
@@ -1052,10 +1052,11 @@ stage('Deploy to kubernets'){
             }
         }
 ```
-stage view
+- stage view
 ![promstatus](screenshots/promstatus.png)
 
-In the Kubernetes cluster(master) give this command
+- In the Kubernetes cluster(master) give this command
+
 ```
 kubectl get all 
 kubectl get svc #use anyone
