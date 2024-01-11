@@ -817,3 +817,17 @@ You will see the output below, with a dependency trend.
 
 When you log in to Dockerhub, you will see a new image is created
 ![docker](screenshots/screenshots/dockerhub-image.png)
+
+Now Run the container to see if the game coming up or not by adding the below stage
+```
+stage('Deploy to container'){
+            steps{
+                sh 'docker run -d --name netflix -p 8081:80 siri/netflix:latest'
+            }
+        }
+```
+
+<Jenkins-public-ip:8081>
+
+You will get this output
+
