@@ -1058,7 +1058,7 @@ kubectl get svc #use anyone
 
 output:
 
-![web](screenshots/)
+![web](screenshots/webbrowser.png)
 Monitoring
 
 ![mon](screenshots/monitoring.avif)
