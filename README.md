@@ -653,3 +653,13 @@ Goto Jenkins Dashboard → Manage Jenkins → Credentials → Add Secret Text. I
 ![sonar](screenshots/sonarcredinjenkins.png)
 
 Now, go to Dashboard → Manage Jenkins → System and Add like the below image.
+![sonar](screenshots/sonar-install config.avif)
+![sonar](screenshots/sonartokenadd.png)
+
+Click on Apply and Save
+
+The Configure System option is used in Jenkins to configure different server
+
+Global Tool Configuration is used to configure different tools that we install using Plugins
+
+We will install a sonar scanner in the tools.
