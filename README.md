@@ -1065,8 +1065,6 @@ kubectl get svc #use anyone
 ```
 <public-ip-of-slave:service port>
 ```
-output:
-
 ![web](screenshots/webbrowser.png)
 
 ### Monitoring
