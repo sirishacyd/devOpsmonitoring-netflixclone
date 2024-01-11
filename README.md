@@ -627,3 +627,27 @@ Goto Manage Jenkins → Tools → Install JDK(17) and NodeJs(16)→ Click on App
 
 ![jdk](screenshots/jdk.png)
 ![node](screenshots/node16.png)
+
+# 7C — Create a Job
+create a job as Netflix Name, select pipeline and click on ok.
+
+## Step 8 — Configure Sonar Server in Manage Jenkins
+
+### Obtain Public IP and Configure Sonarqube Token
+
+1. **Grab the Public IP Address** of your EC2 Instance.
+
+2. **Access Sonarqube Server:**
+   - Open a web browser and go to `<Public IP>:9000` (Sonarqube typically runs on Port 9000).
+
+3. **Navigate to Administration:**
+   - Click on "Administration."
+
+4. **Generate a Token:**
+   - In the Security section, click on "Users."
+   - Select a user, click on "Tokens," and create a token with a name of your choice.
+
+Save the generated token securely for authentication or other purposes.
+Goto Jenkins Dashboard → Manage Jenkins → Credentials → Add Secret Text. It should look like this
+
+![sonar](screenshots/sonarcredinjenkins.png)
