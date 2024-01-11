@@ -197,7 +197,7 @@ sudo apt-get install trivy -y
 
 ## Step 4 : Install Prometheus and Grafana On the new Server
 
-## Create a Dedicated Linux User for Prometheus
+### Create a Dedicated Linux User for Prometheus
 
 Creating a dedicated Linux user for Prometheus is important for security and administration purposes. It helps reduce the impact of incidents and simplifies resource tracking.
 
@@ -210,7 +210,7 @@ sudo useradd \
     --shell /bin/false prometheus
 ```
 
-## Checking and Downloading Prometheus
+### Checking and Downloading Prometheus
 
 To get the latest Prometheus version:
 
@@ -264,7 +264,7 @@ Verify that Prometheus is installed correctly and check its version:
 prometheus --version
 ```
 
-# Setting up Prometheus with Systemd
+### Setting up Prometheus with Systemd
 
 We're going to use Systemd, which is a system and service manager for Linux operating systems. For that, we need to create a Systemd unit configuration file.
 
@@ -335,11 +335,11 @@ journalctl -u prometheus -f --no-pager
 ```
 ![prom-9090](screenshots/promo9090.png)
 
-# Install Node Exporter on Ubuntu 22.04
+### Install Node Exporter on Ubuntu 22.04
 
 we will set up and configure Node Exporter to collect Linux system metrics like CPU load and disk I/O. Node Exporter will expose these metrics in Prometheus-style format. The installation process for Node Exporter is similar to Prometheus.
 
-## Create a System User for Node Exporter
+### Create a System User for Node Exporter
 
 To begin, create a system user for Node Exporter by running the following command:
 
@@ -452,7 +452,7 @@ http://<ip>:9090/targets
 
 ![node](screenshots/nodeexport-site.png)
 
-## Install Grafana on Ubuntu 22.04
+### Install Grafana on Ubuntu 22.04
 Let's make sure that all the dependencies are installed.
 ```
 sudo apt-get install -y apt-transport-https software-properties-common
@@ -505,7 +505,7 @@ Let's add Dashboard for a better view,Click on Import Dashboard paste this code 
 
 ![grafana](screenshots/import-graf-prom.png)
 
-# Step 5: Install Prometheus Plugin for Jenkins
+## Step 5: Install Prometheus Plugin for Jenkins
 
 1. Ensure Jenkins is running.
 
@@ -618,7 +618,7 @@ Next, we will log in to Jenkins and start to configure our Pipeline in Jenkins
 
 ## Step 7 — Install Plugins like JDK, Sonarqube Scanner, NodeJs, OWASP Dependency Check
 
-# 7A — Install Plugin
+### 7A — Install Plugin
 Goto Manage Jenkins →Plugins → Available Plugins →
 
 Install below plugins
@@ -629,13 +629,13 @@ Install below plugins
 
 3 → NodeJs Plugin (Install Without restart)
 
-# 7B — Configure Java and Nodejs in Global Tool Configuration
+### 7B — Configure Java and Nodejs in Global Tool Configuration
 Goto Manage Jenkins → Tools → Install JDK(17) and NodeJs(16)→ Click on Apply and Save
 
 ![jdk](screenshots/jdk.png)
 ![node](screenshots/node16.png)
 
-# 7C — Create a Job
+### 7C — Create a Job
 create a job as Netflix Name, select pipeline and click on ok.
 
 ## Step 8 — Configure Sonar Server in Manage Jenkins
@@ -781,7 +781,7 @@ You will see that in status, a graph will also be generated and Vulnerabilities.
 ![owasp](screenshots/Vulnerabilities.png)
 
 
-# Step 10 - Docker Image Build and Push
+## Step 10 - Docker Image Build and Push
 
 To build and push a Docker image, you first need to install the Docker tool on your system. Follow these steps:
 
@@ -855,7 +855,7 @@ curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 ```
-# Part 1 ----------Master Node------------
+### Part 1 ----------Master Node------------
 ```
 sudo hostnamectl set-hostname K8s-Master
 ```
@@ -864,7 +864,7 @@ sudo hostnamectl set-hostname K8s-Master
 sudo hostnamectl set-hostname K8s-Worker
 ```
 
-# Part 2 ------------Both Master & Node ------------
+### Part 2 ------------Both Master & Node ------------
 
 ```
 sudo apt-get update 
@@ -889,7 +889,7 @@ sudo snap install kube-apiserver
 ![master](screenshots/mastercmds-install.png)
 ![worker](screenshots/workercmds-install.png)
 
-Part 3 --------------- Master ---------------
+### Part 3 --------------- Master ---------------
 ```
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 # in case your in root exit from it and run below commands
@@ -899,7 +899,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
-----------Worker Node------------
+### ----------Worker Node------------
 
 ```
 sudo kubeadm join <master-node-ip>:<master-node-port> --token <token> --discovery-token-ca-cert-hash <hash>
@@ -914,7 +914,7 @@ Install Kubernetes Plugin, Once it's installed successfully
 
 goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials - add secret file and save
 
-# Install Node_exporter on both master and worker
+### Install Node_exporter on both master and worker
 Let's add Node_exporter on Master and Worker to monitor the metrics
 
 First, let's create a system user for Node Exporter by running the following command:
@@ -1061,21 +1061,24 @@ kubectl get all
 kubectl get svc #use anyone
 ```
 ## STEP 12:Access from a Web browser with
+```
 <public-ip-of-slave:service port>
-
+```
 output:
 
 ![web](screenshots/webbrowser.png)
-Monitoring
+
+### Monitoring
 
 ![mon](screenshots/monitoring.avif)
 ![mon](screenshots/monitoring1.png)
 ![mon](screenshots/monitoring2.png)
 
-Mail 
+### Mail 
 ![mail](screenshotsmail.png)
 
-Step 13: Terminate instances.
+### Step 13: Terminate instances.
+
 Complete Pipeline
 ```
 pipeline{
