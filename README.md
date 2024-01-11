@@ -768,3 +768,7 @@ stage('OWASP FS SCAN') {
 The stage view would look like this,
 
 ![owasp](screenshots/owasp.png)
+
+You will see that in status, a graph will also be generated and Vulnerabilities.
+
+![owasp](screenshots/owasp.png)
