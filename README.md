@@ -745,3 +745,22 @@ GotoDashboard → Manage Jenkins → Plugins → OWASP Dependency-Check. Click o
 First, we configured the Plugin and next, we had to configure the Tool
 
 Goto Dashboard → Manage Jenkins → Tools →
+![sonar](screenshots/dp-check.png)
+
+Click on Apply and Save here.
+
+Now go configure → Pipeline and add this stage to your pipeline and build.
+
+```
+stage('OWASP FS SCAN') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        stage('TRIVY FS SCAN') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }
+```
