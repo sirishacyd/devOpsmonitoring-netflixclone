@@ -1,71 +1,76 @@
 # Netflix Clone Deployment
 Netflix clone using various tools and technologies. Jenkins will serve as the Continuous Integration and Continuous Deployment (CICD) tool, and the application will be deployed within a Docker container, managed within a Kubernetes Cluster. Additionally, for monitor Jenkins and Kubernetes metrics using Grafana, Prometheus, and Node exporter.
 
-## GitHub Repository
+## Prerequisites
+- An Ubuntu (22.04) T2 Large instance on a cloud provider.
+- Access to a GitHub repository hosting the Netflix clone code
+-  https://github.com/sirishacyd/netflix-clone
 
-[GitHub Repository](https://github.com/sirishacyd/netflix-clone)
 
+## Steps Overview
+1. **Launch an Ubuntu (22.04) T2 Large Instance**
+2. **Install Jenkins, Docker, and Trivy**
+3. **Create a TMDB API Key**
+4. **Install Prometheus and Grafana**
+5. **Integrate Prometheus with Jenkins**
+6. **Email Integration With Jenkins**
+7. **Install Required Jenkins Plugins**
+8. **Create a Jenkins Pipeline**
+9. **Install OWASP Dependency Check Plugins**
+10. **Docker Image Build and Push**
+11. **Deploy the Image Using Docker**
+12. **Kubernetes Master and Slave Setup**
+13. **Access the Netflix Clone App**
+14. **Terminate the AWS EC2 Instances**
 
-![architecture ](screenshots/arch.png)
+## Detailed Steps
 
-## Steps
+### Step 1: Launch an Ubuntu (22.04) T2 Large Instance
+- Launch an AWS T2 Large Instance using the Ubuntu image.
+- Configure HTTP and HTTPS settings in the security group.
 
-### Step 1: Launch an Ubuntu(22.04) T2 Large Instance
-
-- Start by launching an Ubuntu 22.04 T2 Large instance on preferred cloud provider.
-
-### Step 2: Install Jenkins, Docker, and Trivy. Create a Sonarqube Container using Docker.
-
-- Install Jenkins, Docker, and Trivy on your server.
-- Create a Sonarqube container using Docker.
+### Step 2: Install Jenkins, Docker, and Trivy
+- Install Jenkins: Follow the installation guide for Jenkins on Ubuntu.
+- Install Docker: Use `sudo apt-get install docker.io -y`.
+- Install Trivy for vulnerability scanning: Follow the Trivy installation instructions.
 
 ### Step 3: Create a TMDB API Key
+- Register on the TMDB website and generate an API key.
 
-- Obtain a TMDB API Key for accessing movie data.
+### Step 4: Install Prometheus and Grafana
+- Install Prometheus for monitoring.
+- Install Grafana for analytics and monitoring visualization.
 
-### Step 4: Install Prometheus and Grafana On the new Server
+### Step 5: Integrate Prometheus with Jenkins
+- Install the Prometheus plugin in Jenkins.
+- Configure Prometheus to collect metrics from Jenkins.
 
-- Install Prometheus and Grafana on your server for monitoring.
+### Step 6: Email Integration With Jenkins
+- Configure Jenkins to send emails for build notifications.
 
-### Step 5: Install the Prometheus Plugin and Integrate it with the Prometheus server
+### Step 7: Install Required Jenkins Plugins
+- Install plugins such as JDK, SonarQube Scanner, Node.js, and OWASP Dependency Check.
 
-- Set up Prometheus plugin and integrate it with your Prometheus server for metrics collection.
-
-### Step 6: Email Integration With Jenkins and Plugin setup
-
-- Configure email integration with Jenkins and set up necessary plugins.
-
-### Step 7: Install Plugins like JDK, Sonarqube Scanner, Node.js, and OWASP Dependency Check
-
-- Install required plugins such as JDK, Sonarqube Scanner, Node.js, and OWASP Dependency Check in Jenkins.
-
-### Step 8: Create a Pipeline Project in Jenkins using a Declarative Pipeline
-
-- Create a pipeline project in Jenkins using a declarative pipeline to automate your deployment.
+### Step 8: Create a Jenkins Pipeline
+- Set up a pipeline in Jenkins for CI/CD processes.
 
 ### Step 9: Install OWASP Dependency Check Plugins
-
-- Install OWASP Dependency Check plugins for security scanning.
+- Integrate OWASP Dependency Check for security scanning.
 
 ### Step 10: Docker Image Build and Push
+- Build and push the Docker image of the Netflix clone to DockerHub.
 
-- Build and push Docker images for your application.
+### Step 11: Deploy the Image Using Docker
+- Deploy the Docker image on your server.
 
-### Step 11: Deploy the image using Docker
+### Step 12: Kubernetes Master and Slave Setup
+- Set up Kubernetes for orchestrating the deployment.
 
-- Deploy the Docker image of your application.
-
-### Step 12: Kubernetes master and slave setup on Ubuntu (20.04)
-
-- Set up a Kubernetes master and slave on Ubuntu 20.04 for scalable deployment.
-
-### Step 13: Access the Netflix app on the Browser
-
-- Access your Netflix clone application through a web browser.
+### Step 13: Access the Netflix Clone App
+- Access the deployed application through a web browser.
 
 ### Step 14: Terminate the AWS EC2 Instances
-
-- Terminate the AWS EC2 instances to save resources.
+- Shut down the AWS EC2 instances to conserve resources.
 
 
 ## let's get started and dig deeper into each of these steps:
