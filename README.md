@@ -624,3 +624,6 @@ Install below plugins
 
 # 7B — Configure Java and Nodejs in Global Tool Configuration
 Goto Manage Jenkins → Tools → Install JDK(17) and NodeJs(16)→ Click on Apply and Save
+
+![jdk](screenshots/jdk.png)
+![node](screenshots/node16.png)
