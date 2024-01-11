@@ -1071,11 +1071,11 @@ output:
 ### Monitoring
 
 ![mon](screenshots/monitoring.avif)
-![mon](screenshots/monitoring1.png)
-![mon](screenshots/monitoring2.png)
+![monitoring1](screenshots/monitoring1.png)
+![/monitoring2](screenshots/monitoring2.avif)
 
 ### Mail 
-![mail](screenshotsmail.png)
+![mail](screenshots/mail.png)
 
 ### Step 13: Terminate instances.
 
