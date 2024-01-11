@@ -771,4 +771,49 @@ The stage view would look like this,
 
 You will see that in status, a graph will also be generated and Vulnerabilities.
 
-![owasp](screenshots/owasp.png)
+![owasp](screenshots/Vulnerabilities.png)
+
+
+# Step 10 - Docker Image Build and Push
+
+To build and push a Docker image, you first need to install the Docker tool on your system. Follow these steps:
+
+1. **Install Docker Plugins**: Go to your system's Dashboard.
+2. Navigate to **Manage Plugins**.
+3. In the **Available plugins** section, use the search function to find the following plugins:
+    - `Docker`
+    - `Docker Commons`
+    - `Docker Pipeline`
+    - `Docker API`
+    - `docker-build-step`
+4. Once you have located these plugins, click on **Install without restart** for each plugin.
+5. Now, goto Dashboard → Manage Jenkins → Tools → add docker name - choose version as latest
+6. Add DockerHub Username and Password under Global Credentials
+7. Add this stage to Pipeline Script
+
+```
+stage("Docker Build & Push"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                       sh "docker build --build-arg TMDB_V3_API_KEY=addkey -t netflix ."
+                       sh "docker tag netflix siri/netflix:latest "
+                       sh "docker push siri/netflix:latest "
+                    }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+                sh "trivy image siri/netflix:latest > trivyimage.txt" 
+            }
+        }
+
+```
+
+You will see the output below, with a dependency trend.
+
+![docker](screenshots/screenshots/latestjob-depcheck.png)
+
+When you log in to Dockerhub, you will see a new image is created
+![docker](screenshots/screenshots/dockerhub-image.png)
