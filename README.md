@@ -764,3 +764,7 @@ stage('OWASP FS SCAN') {
             }
         }
 ```
+
+The stage view would look like this,
+
+![owasp](screenshots/owasp.png)
