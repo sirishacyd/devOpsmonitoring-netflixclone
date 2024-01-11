@@ -6,7 +6,7 @@ Netflix clone using various tools and technologies. Jenkins will serve as the Co
 [GitHub Repository](https://github.com/sirishacyd/netflix-clone)
 
 
-![architecture ](screenshots/)
+![architecture ](screenshots/arch.png)
 
 ## Steps
 
