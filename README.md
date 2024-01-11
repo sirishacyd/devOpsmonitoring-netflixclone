@@ -651,3 +651,5 @@ Save the generated token securely for authentication or other purposes.
 Goto Jenkins Dashboard → Manage Jenkins → Credentials → Add Secret Text. It should look like this
 
 ![sonar](screenshots/sonarcredinjenkins.png)
+
+Now, go to Dashboard → Manage Jenkins → System and Add like the below image.
