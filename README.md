@@ -1058,13 +1058,15 @@ kubectl get svc #use anyone
 
 output:
 
-![promstatus](screenshots/promstatus.png)
+![web](screenshots/)
 Monitoring
 
-![promstatus](screenshots/promstatus.png)
+![mon](screenshots/monitoring.avif)
+![mon](screenshots/monitoring1.png)
+![mon](screenshots/monitoring2.png)
 
 Mail 
-![promstatus](screenshots/promstatus.png)
+![mail](screenshotsmail.png)
 
 Step 13: Terminate instances.
 Complete Pipeline
