@@ -4,7 +4,7 @@ Netflix clone using various tools and technologies. Jenkins will serve as the Co
 ## Prerequisites
 - An Ubuntu (22.04) T2 Large instance on a cloud provider.
 - Access to a GitHub repository hosting the Netflix clone code
-[git](https://github.com/sirishacyd/netflix-clone)
+[repo](https://github.com/sirishacyd/devOpsmonitoring-netflixclone)
 ![arch](screenshots/arch.png)
 
 ## Steps Overview
