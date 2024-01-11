@@ -654,7 +654,7 @@ Goto Jenkins Dashboard → Manage Jenkins → Credentials → Add Secret Text. I
 
 Now, go to Dashboard → Manage Jenkins → System and Add like the below image.
 ![sonar](screenshots/sonar-install config.avif)
-![sonar](screenshots/sonartokenadd.png)
+
 
 Click on Apply and Save
 
@@ -663,3 +663,80 @@ The Configure System option is used in Jenkins to configure different server
 Global Tool Configuration is used to configure different tools that we install using Plugins
 
 We will install a sonar scanner in the tools.
+
+![sonar](screenshots/sonartokenadd.png)
+
+In the Sonarqube Dashboard add a quality gate also
+
+Administration--> Configuration-->Webhooks ->click create
+
+Add details
+
+```
+#in url section of quality gate
+<http://jenkins-public-ip:8080>/sonarqube-webhook/
+```
+
+Let's go to our Pipeline and add the script in our Pipeline Script
+
+```
+pipeline{
+    agent any
+    tools{
+        jdk 'jdk17'
+        nodejs 'node16'
+    }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/Aj7Ay/Netflix-clone.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
+                    -Dsonar.projectKey=Netflix '''
+                }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token' 
+                }
+            } 
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh "npm install"
+            }
+        }
+    }
+    post {
+     always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: "Project: ${env.JOB_NAME}<br/>" +
+                "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                "URL: ${env.BUILD_URL}<br/>",
+            to: 'xxxx@gmail.com',
+            attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+        }
+    }
+}
+```
+
+Click on Build now, you will see the stage view like this
+
+![sonar](screenshots/sonartokenadd.png)
+
+
