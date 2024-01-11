@@ -831,3 +831,201 @@ stage('Deploy to container'){
 
 You will get this output
 
+![docker8081](screenshots/screenshots/8081.png)
+
+## Step 11 — Kuberenetes Setup
+Connect your machines to Putty or Mobaxtreme
+
+Take-Two Ubuntu 20.04 instances one for k8s master and the other one for worker.
+
+Install Kubectl on Jenkins machine also.
+Kubectl is to be installed on Jenkins also
+
+```
+sudo apt update
+sudo apt install curl
+curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+```
+# Part 1 ----------Master Node------------
+```
+sudo hostnamectl set-hostname K8s-Master
+```
+----------Worker Node------------
+```
+sudo hostnamectl set-hostname K8s-Worker
+```
+
+# Part 2 ------------Both Master & Node ------------
+
+```
+sudo apt-get update 
+
+sudo apt-get install -y docker.io
+sudo usermod –aG docker Ubuntu
+newgrp docker
+sudo chmod 777 /var/run/docker.sock
+
+sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+sudo tee /etc/apt/sources.list.d/kubernetes.list <<EOF
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl
+
+sudo snap install kube-apiserver
+```
+![master](screenshots/mastercmds-install.png)
+![worker](screenshots/workercmds-install.png)
+
+Part 3 --------------- Master ---------------
+```
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+# in case your in root exit from it and run below commands
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
+
+----------Worker Node------------
+
+```
+sudo kubeadm join <master-node-ip>:<master-node-port> --token <token> --discovery-token-ca-cert-hash <hash>
+```
+Copy the config file to Jenkins master or the local file manager and save it
+
+copy it and save it in documents or another folder save it as secret-file.txt
+
+Note: create a secret-file.txt in your file explorer save the config in it and use this at the kubernetes credential section.
+
+Install Kubernetes Plugin, Once it's installed successfully
+
+goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials - add secret file and save
+
+# Install Node_exporter on both master and worker
+Let's add Node_exporter on Master and Worker to monitor the metrics
+
+First, let's create a system user for Node Exporter by running the following command:
+
+```
+sudo useradd \
+    --system \
+    --no-create-home \
+    --shell /bin/false node_exporter
+```
+
+
+Use the wget command to download the binary.
+
+```
+wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+```
+
+Extract the node exporter from the archive.
+```
+tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
+```
+Move binary to the /usr/local/bin.
+```
+sudo mv \
+  node_exporter-1.6.1.linux-amd64/node_exporter \
+  /usr/local/bin/
+```
+
+Clean up, and delete node_exporter archive and a folder.
+```
+rm -rf node_exporter*
+```
+Verify that you can run the binary
+```
+node_exporter --version
+```
+
+Node Exporter has a lot of plugins that we can enable. If you run Node Exporter help you will get all the options
+```
+node_exporter --help
+
+```
+systemd unit file.
+```
+sudo vim /etc/systemd/system/node_exporter.service
+```
+node_exporter.service
+```
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/bin/node_exporter \
+    --collector.logind
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Replace Prometheus user and group to node_exporter, and update the ExecStart command.
+
+To automatically start the Node Exporter after reboot, enable the service.
+```
+sudo systemctl enable node_exporter
+```
+Then start the Node Exporter.
+```
+sudo systemctl start node_exporter
+```
+Check the status of Node Exporter with the following command
+
+```
+sudo systemctl status node_exporter
+```
+If you have any issues, check logs with journalctl
+
+```
+journalctl -u node_exporter -f --no-pager
+```
+
+To create a static target, you need to add job_name with static_configs. Go to Prometheus server
+```
+sudo vim /etc/prometheus/prometheus.yml
+
+```
+prometheus.yml
+```
+  - job_name: node_export_masterk8s
+    static_configs:
+      - targets: ["<master-ip>:9100"]
+
+  - job_name: node_export_workerk8s
+    static_configs:
+      - targets: ["<worker-ip>:9100"]
+```
+By default, Node Exporter will be exposed on port 9100.
+Before, restarting check if the config is valid.
+```
+promtool check config /etc/prometheus/prometheus.yml
+```
+ use a POST request to reload the config.
+ ```
+curl -X POST http://localhost:9090/-/reload
+```
+Check the targets section
+```
+http://<ip>:9090/targets
+```
+
+
