@@ -554,7 +554,7 @@ http://<ip>:9090/targets
 
 You will see Jenkins is added to it
 
-![jenkins-prom](screenshots/screenshots/targets-up.png)
+![jenkins-prom](screenshots/targets-up.png)
 
 1. Access Grafana Dashboard.
 2. Click on the "+" symbol in the top menu.
@@ -564,7 +564,7 @@ You will see Jenkins is added to it
 6. Click "Import" to finalize.
 7. View the detailed Jenkins overview.
 
-![jenkins-prom](screenshots/dashgrafanaJenkins.png)
+![dash](screenshots/dashgrafanaJenkins.png)
 
 ## Step 6 — Email Integration With Jenkins and Plugin Setup
 Install Email Extension Plugin in Jenkins
