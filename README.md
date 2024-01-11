@@ -118,7 +118,7 @@ sudo chmod 777 jenkins.sh
 ./jenkins.sh    # installl jenkins
 ```
 
-## Configuring Jenkins After Installation
+### Configuring Jenkins After Installation
 
 Once Jenkins is installed, follow these steps:
 
