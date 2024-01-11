@@ -735,8 +735,13 @@ pipeline{
 }
 ```
 
-Click on Build now, you will see the stage view like this
+Click on Build now, To see the report, you can go to Sonarqube Server and go to Projects.
 
-![sonar](screenshots/sonartokenadd.png)
+![sonar](screenshots/sonarqube-report.png)
 
+## Step 9 — Install OWASP Dependency Check Plugins
+GotoDashboard → Manage Jenkins → Plugins → OWASP Dependency-Check. Click on it and install it without restart.
 
+First, we configured the Plugin and next, we had to configure the Tool
+
+Goto Dashboard → Manage Jenkins → Tools →
